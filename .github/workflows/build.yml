@@ -75,11 +75,11 @@ jobs:
             -dname "CN=Cookie Launcher Debug, O=Cookie Launcher, C=TR" || true
 
       - name: Build APK (arm64, debug)
-        run: ./gradlew :FCL:assembleDebug -Darch=arm64 --no-daemon --stacktrace
+        run: ./gradlew :FCL:assembleDebug -Darch=all --no-daemon --stacktrace
 
       - name: Build APK (arm64, release - keystore varsa)
         if: env.HAVE_RELEASE_KEY == '1'
-        run: ./gradlew :FCL:assembleRelease -Darch=arm64 --no-daemon --stacktrace
+        run: ./gradlew :FCL:assembleRelease -Darch=all --no-daemon --stacktrace
 
       - name: APK'lari yukle
         uses: actions/upload-artifact@v4
