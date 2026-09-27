@@ -1,0 +1,19 @@
+Cookie Launcher (Android) — ÜÇÜNCÜ TARAF BİLEŞENLER VE ATIFLAR
+
+1) FoldCraftLauncher — GPL-3.0
+   https://github.com/FCL-Team/FoldCraftLauncher
+   Bu depo yukarıdaki projenin forkudur (temel commit e8e909c). Telif hakları ilgili
+   katkıcılara aittir; lisans metni LICENSE dosyasındadır.
+
+2) ZalithLauncher / ZalithLauncher2 — GPL-3.0
+   https://github.com/ZalithLauncher/ZalithLauncher2
+   Bazı modüller (SDL köprüsü, gamepad, tuş eşlemeleri, kontrol şeması dönüştürücü) bu
+   projeden portlanmıştır; ilgili dosya başlıklarındaki telif bildirimleri korunmuştur.
+
+3) Terracotta (net.burningtnt.terracotta) — bkz. Terracotta/ dizini
+4) ZipFileSystem (com.sun.nio.zipfs) — GPLv2 + Classpath Exception
+5) LWJGL — BSD-3-Clause
+6) Diğer bağımlılıklar için upstream depodaki lisans/atıf dosyalarına bakınız.
+
+Bu proje Mojang/Microsoft ile bağlantılı değildir. Minecraft, Mojang Synergies AB'nin
+ticari markasıdır. Bu yazılım hiçbir oyun dosyası, oyun kodu veya hesap bilgisi dağıtmaz.

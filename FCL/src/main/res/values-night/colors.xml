@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_text">#F5E6D3</color>
+    <!-- Cookie Launcher renkleri (gece) -->
+    <color name="dialog_background">#1E1512</color>
+</resources>

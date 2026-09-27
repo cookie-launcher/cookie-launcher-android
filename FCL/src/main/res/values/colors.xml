@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="default_theme_color">#C98A4B</color>
+    <color name="default_theme_color_dark">#A9713A</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="ui_bg_color">#40F5E6D3</color>
+    <color name="right_menu_color">#80F5E6D3</color>
+    <color name="icon_background_color">#F5E6D3</color>
+    <color name="primary_text">#2B1D16</color>
+    <!-- Cookie Launcher renkleri -->
+    <color name="dialog_background">#F5E6D3</color>
+</resources>

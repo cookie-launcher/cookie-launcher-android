@@ -1,0 +1,19 @@
+[
+  {
+    "type": "release",
+    "versionCode": 1,
+    "versionName": "1.0.0",
+    "date": "2026.09.27",
+    "description": [
+      {
+        "lang": "tr",
+        "text": "Cookie Launcher Android 1.0.0\n- FoldCraftLauncher (GPL-3.0) tabanli ilk surum\n- Arayuz Turkce, Cookie Launcher marka ve renk temasi\n- Modrinth ve CurseForge'tan mod/modpack indirme\n- Minecraft: Java Edition'i Android'de calistirir"
+      },
+      {
+        "lang": "en",
+        "text": "Cookie Launcher Android 1.0.0\n- First release, based on FoldCraftLauncher (GPL-3.0)\n- Turkish UI, Cookie Launcher branding and color theme\n- Download mods/modpacks from Modrinth and CurseForge\n- Runs Minecraft: Java Edition on Android"
+      }
+    ],
+    "url": "https://github.com/cookie-launcher/cookie-launcher-android/releases/latest"
+  }
+]

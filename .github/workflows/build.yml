@@ -1,0 +1,63 @@
+name: Build APK
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Setup Android SDK (SDK 35 + NDK 27 + CMake)
+        uses: android-actions/setup-android@v3
+        with:
+          packages: |
+            platforms;android-35
+            build-tools;35.0.0
+            ndk;27.0.12077973
+            cmake;3.22.1
+
+      - name: Keystore hazirla
+        env:
+          KS_B64: ${{ secrets.COOKIE_KEYSTORE_BASE64 }}
+          KS_PWD: ${{ secrets.COOKIE_KEYSTORE_PASSWORD }}
+        run: |
+          set -euo pipefail
+          PWD_USE="${KS_PWD:-cookie-launcher-ci}"
+          if [ -n "${KS_B64:-}" ]; then
+            echo "$KS_B64" | base64 -d > key-store.jks
+            echo "Kalici keystore kullaniliyor."
+          else
+            keytool -genkeypair -keystore key-store.jks -alias Cookie-Key \
+              -keyalg RSA -keysize 2048 -validity 10000 \
+              -storepass "$PWD_USE" -keypass "$PWD_USE" \
+              -dname "CN=Cookie Launcher, O=Cookie Launcher, C=TR" > /dev/null 2>&1
+            echo "Gecici keystore uretildi (kalici imza icin COOKIE_KEYSTORE_BASE64 ekleyin)."
+          fi
+          echo "COOKIE_KEYSTORE_PASSWORD=$PWD_USE" >> "$GITHUB_ENV"
+          keytool -genkeypair -keystore debug-key.jks -alias Cookie-Debug \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -storepass Cookie-Debug -keypass Cookie-Debug \
+            -dname "CN=Cookie Launcher Debug, O=Cookie Launcher, C=TR" > /dev/null 2>&1
+
+      - name: Build APK (arm64, debug + release)
+        run: ./gradlew :FCL:assembleDebug :FCL:assembleRelease -Darch=arm64 --no-daemon
+
+      - name: APK'lari yukle
+        uses: actions/upload-artifact@v4
+        with:
+          name: cookie-launcher-apk
+          path: FCL/build/outputs/apk/**/*.apk
+          if-no-files-found: warn
