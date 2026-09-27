@@ -58,7 +58,7 @@
     <string name="about_developer" translatable="false">Cookie Launcher</string>
     <string name="about_sponsor">Sponsor</string>
     <string name="about_source">Açık Kaynak</string>
-    <string name="about_desc">Cookie Launcher, kullanıcıların Android cihazlarda Minecraft: Java Edition\'ı başlatmasına olanak tanıyan bir Android Minecraft başlatıcısıdır.\n\nCookie Launcher, Cookie Launcher tarafından geliştirilmiştir.\n\nCookie Launcher\'ın özelliklerinin çoğu HMCLCore temel alınarak değiştirilmiştir.\n\nUygulama, PojavLauncher ve Boat kodlarından bazı alıntılar içerir; bu nedenle bu uygulamayı dağıtacaksanız lütfen GPL-v3 Lisansına uyun.</string>
+    <string name="about_desc">Cookie Launcher, kullanıcıların Android cihazlarda Minecraft: Java Edition\'ı başlatmasına olanak tanıyan bir Android Minecraft başlatıcısıdır.\n\nCookie Launcher ekibi tarafından geliştirilmiştir.\n\nCookie Launcher\'ın özelliklerinin çoğu HMCLCore temel alınarak değiştirilmiştir.\n\nUygulama, PojavLauncher ve Boat kodlarından bazı alıntılar içerir; bu nedenle bu uygulamayı dağıtacaksanız lütfen GPL-v3 Lisansına uyun.</string>
 
     <string name="account_add_server">Kimlik doğrulama sunucusu ekle</string>
     <string name="account_add_server_url">Sunucu URL\'si</string>
