@@ -40,31 +40,46 @@ jobs:
           echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/27.0.12077973" >> "$GITHUB_ENV"
           echo "sdk.dir=$ANDROID_HOME" > local.properties
 
-      - name: Keystore hazirla
+      - name: Keystore hazirla (release icin; olmazsa debug yeter)
         env:
           KS_B64: ${{ secrets.COOKIE_KEYSTORE_BASE64 }}
           KS_PWD: ${{ secrets.COOKIE_KEYSTORE_PASSWORD }}
         run: |
-          set -euo pipefail
+          set -uo pipefail
+          echo "Java: $(java -version 2>&1 | head -1)"
+          command -v keytool || { echo "::error::keytool yok"; exit 1; }
           PWD_USE="${KS_PWD:-cookie-launcher-ci}"
+          OK=0
           if [ -n "${KS_B64:-}" ]; then
-            echo "$KS_B64" | base64 -d > key-store.jks
-            echo "Kalici keystore kullaniliyor."
-          else
-            keytool -genkeypair -keystore key-store.jks -alias Cookie-Key \
-              -keyalg RSA -keysize 2048 -validity 10000 \
-              -storepass "$PWD_USE" -keypass "$PWD_USE" \
-              -dname "CN=Cookie Launcher, O=Cookie Launcher, C=TR" > /dev/null 2>&1
-            echo "Gecici keystore uretildi (kalici imza icin COOKIE_KEYSTORE_BASE64 ekleyin)."
+            if echo "$KS_B64" | base64 -d > key-store.jks 2>/dev/null; then
+              echo "Kalici keystore kullaniliyor."; OK=1
+            else
+              echo "::warning::COOKIE_KEYSTORE_BASE64 cozulemedi."
+            fi
+          fi
+          if [ "$OK" = "0" ]; then
+            if keytool -genkeypair -noprompt -keystore key-store.jks -alias Cookie-Key \
+                 -keyalg RSA -keysize 2048 -validity 10000 -storetype PKCS12 \
+                 -storepass "$PWD_USE" -keypass "$PWD_USE" \
+                 -dname "CN=Cookie Launcher, O=Cookie Launcher, C=TR"; then
+              echo "Gecici keystore uretildi."; OK=1
+            else
+              echo "::warning::Gecici keystore uretilemedi; yalnizca debug APK derlenecek."
+            fi
           fi
           echo "COOKIE_KEYSTORE_PASSWORD=$PWD_USE" >> "$GITHUB_ENV"
-          keytool -genkeypair -keystore debug-key.jks -alias Cookie-Debug \
-            -keyalg RSA -keysize 2048 -validity 10000 \
+          echo "HAVE_RELEASE_KEY=$OK" >> "$GITHUB_ENV"
+          keytool -genkeypair -noprompt -keystore debug-key.jks -alias Cookie-Debug \
+            -keyalg RSA -keysize 2048 -validity 10000 -storetype PKCS12 \
             -storepass Cookie-Debug -keypass Cookie-Debug \
-            -dname "CN=Cookie Launcher Debug, O=Cookie Launcher, C=TR" > /dev/null 2>&1
+            -dname "CN=Cookie Launcher Debug, O=Cookie Launcher, C=TR" || true
 
-      - name: Build APK (arm64, debug + release)
-        run: ./gradlew :FCL:assembleDebug :FCL:assembleRelease -Darch=arm64 --no-daemon
+      - name: Build APK (arm64, debug)
+        run: ./gradlew :FCL:assembleDebug -Darch=arm64 --no-daemon --stacktrace
+
+      - name: Build APK (arm64, release - keystore varsa)
+        if: env.HAVE_RELEASE_KEY == '1'
+        run: ./gradlew :FCL:assembleRelease -Darch=arm64 --no-daemon --stacktrace
 
       - name: APK'lari yukle
         uses: actions/upload-artifact@v4

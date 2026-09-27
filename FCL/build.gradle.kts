@@ -88,8 +88,10 @@ android {
             signingConfig = signingConfigs.getByName("CookieKey")
         }
         getByName("debug") {
+            // Test APK'si Android'in varsayilan debug anahtariyla imzalanir;
+            // boylece CI'da ayri keystore gerekmez.
             isMinifyEnabled = false
-            signingConfig = signingConfigs.getByName("CookieKey")
+            signingConfig = signingConfigs.getByName("debug")
         }
         create("fordebug") {
             initWith(getByName("debug"))
